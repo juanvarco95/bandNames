@@ -42,15 +42,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ListTile _bandTile(Band band) {
-    return ListTile(
-      leading: CircleAvatar(
-          child: Text(band.name.substring(0, 2)),
-          backgroundColor: Colors.blue[100]),
-      title: Text(band.name, style: const TextStyle(fontSize: 20)),
-      // ignore: avoid_print
-      onTap: () => print(band.name),
-      trailing: Text('${band.votes}', style: const TextStyle(fontSize: 20)),
+  Widget _bandTile(Band band) {
+    return Dismissible(
+      key: Key(band.id),
+      direction: DismissDirection.startToEnd,
+      onDismissed: (direction) {
+        debugPrint('Direction: $direction');
+        debugPrint('id: ${band.id}');
+        bands.remove(band);
+      },
+      background: Container(
+        color: Colors.red,
+        child: ListTile(
+          leading: const Icon(Icons.restore_from_trash_sharp),
+          title: Text('Delete ${band.name}'),
+        ),
+      ),
+      child: ListTile(
+        leading: CircleAvatar(
+            child: Text(band.name.substring(0, 2)),
+            backgroundColor: Colors.blue[100]),
+        title: Text(band.name, style: const TextStyle(fontSize: 20)),
+        // ignore: avoid_print
+        onTap: () {
+          setState(() {
+            band.votes += 1;
+            debugPrint('${band.votes}');
+            // print(band.votes);
+          });
+        },
+        trailing: Text('${band.votes}', style: const TextStyle(fontSize: 20)),
+      ),
     );
   }
 
