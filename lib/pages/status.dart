@@ -8,12 +8,22 @@ class StatusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final socketService = Provider.of<SocketService>(context);
+    // final socketEmit = socketService.socket.emit('emitir-mensjaje');
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('ServerStatys: ${socketService.serverStatus}')],
+          children: [Text('ServerStatus: ${socketService.serverStatus}')],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.message),
+        onPressed: () {
+          print('object');
+          socketService.socket.emit('emitir-mensaje', 'Juan');
+          // socketService.socket.emit('emitir-otro-mensaje', 'Juan Miguel');
+          // socketService.socket.emit('Culo', 'Culo');
+        },
       ),
     );
   }
